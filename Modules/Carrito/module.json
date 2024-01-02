@@ -1,0 +1,11 @@
+{
+    "name": "Carrito",
+    "alias": "carrito",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Carrito\\app\\Providers\\CarritoServiceProvider"
+    ],
+    "files": []
+}

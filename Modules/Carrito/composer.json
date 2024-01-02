@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/carrito",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Carrito\\": "",
+            "Modules\\Carrito\\App\\": "app/",
+            "Modules\\Carrito\\Database\\Factories\\": "database/factories/",
+            "Modules\\Carrito\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Carrito\\Tests\\": "tests/"
+        }
+    }
+}
