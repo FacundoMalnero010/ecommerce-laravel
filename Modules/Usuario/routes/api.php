@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Usuario\app\Http\Controllers\UsuarioController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('usuario', fn (Request $request) => $request->user())->name('usuario');
+Route::prefix('usuarios')->controller(UsuarioController::class)->group(function () {
+
+    Route::get('/','get')->name('usuarios.get');
+    Route::get('/find','find')->name('usuarios.find');
+    Route::post('/','store')->name('usuarios.store');
+    Route::put('/update','update')->name('usuarios.update');
+    Route::delete('/delete','destroy')->name('usuarios.destroy');
+
 });

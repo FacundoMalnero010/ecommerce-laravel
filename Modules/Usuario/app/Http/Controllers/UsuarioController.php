@@ -3,65 +3,100 @@
 namespace Modules\Usuario\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Http\Response\ErrorResponse;
+use App\Http\Response\SuccessResponse;
+use Exception;
+use Modules\Usuario\app\Http\Requests\UsuarioFindRequest;
+use Modules\Usuario\app\Http\Requests\UsuarioStoreRequest;
+use Modules\Usuario\app\Http\Requests\UsuarioUpdateRequest;
+use Modules\Usuario\Services\UsuarioService;
+
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected UsuarioService $usuarioService;
+
+    public function __construct(UsuarioService $usuarioService)
     {
-        return view('usuario::index');
+        $this->usuarioService = $usuarioService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Returns a list of users
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function create()
+    public function get(): SuccessResponse|ErrorResponse
     {
-        return view('usuario::create');
+        try {
+            $response = $this->usuarioService->get();
+            return new SuccessResponse($response);
+        }catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Finds a user by id
+     * @param UsuarioFindRequest $request
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function store(Request $request): RedirectResponse
+    public function find(UsuarioFindRequest $request): SuccessResponse|ErrorResponse
     {
-        //
+        try {
+            $response = $this->usuarioService->find($request->input('id'));
+            return new SuccessResponse($response);
+        }catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Show the specified resource.
+     * Persists a user
+     * @param UsuarioStoreRequest $request User's data
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function show($id)
+    public function store(UsuarioStoreRequest $request): SuccessResponse|ErrorResponse
     {
-        return view('usuario::show');
+        try {
+            $response = $this->usuarioService->store($request->all());
+            return new SuccessResponse($response);
+        }catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Updates a user's data
+     * @param UsuarioUpdateRequest $request
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function edit($id)
+    public function update(UsuarioUpdateRequest $request): SuccessResponse|ErrorResponse
     {
-        return view('usuario::edit');
+        try {
+            $response = $this->usuarioService->update($request->input('id'),$request->except('id'));
+            return new SuccessResponse($response);
+        }catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Destroys a user
+     * @param UsuarioFindRequest $request
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function destroy(UsuarioFindRequest $request): SuccessResponse|ErrorResponse
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            $response = $this->usuarioService->destroy($request->input('id'));
+            return new SuccessResponse($response);
+        }catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 }
