@@ -3,65 +3,69 @@
 namespace Modules\Carrito\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Response\ErrorResponse;
+use App\Http\Response\SuccessResponse;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Carrito\app\Http\Requests\CarritoFindRequest;
+use Modules\Carrito\app\Http\Requests\CarritoUpdateRequest;
+use Modules\Carrito\Services\CarritoService;
 
 class CarritoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CarritoService $carritoService;
+
+    public function __construct(CarritoService $carritoService)
     {
-        return view('carrito::index');
+        $this->carritoService = $carritoService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Returns a list of carts
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function create()
+    public function get(): SuccessResponse|ErrorResponse
     {
-        return view('carrito::create');
+        try {
+            $response = $this->carritoService->get();
+            return new SuccessResponse($response);
+        } catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Finds a cart by ID
+     * @param CarritoFindRequest $request
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function store(Request $request): RedirectResponse
+    public function find(CarritoFindRequest $request): SuccessResponse|ErrorResponse
     {
-        //
+        try {
+            $response = $this->carritoService->find($request->input('id'));
+            return new SuccessResponse($response);
+        } catch (Exception $e) {
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 
     /**
-     * Show the specified resource.
+     * Updates a cart's data
+     * @param CarritoUpdateRequest $request
+     * @return SuccessResponse|ErrorResponse
+     * @throws Exception
      */
-    public function show($id)
+    public function update(CarritoUpdateRequest $request): SuccessResponse|ErrorResponse
     {
-        return view('carrito::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('carrito::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            $response = $this->carritoService->update($request->input('id'),$request->except('id'));
+            return new SuccessResponse($response);
+        } catch (Exception $e){
+            return new ErrorResponse($e->getMessage(),$e->getCode());
+        }
     }
 }

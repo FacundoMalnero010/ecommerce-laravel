@@ -14,6 +14,6 @@ use Modules\Usuario\app\Http\Controllers\UsuarioController;
 |
 */
 
-Route::group([], function () {
+/*Route::group([], function () {
     Route::resource('usuario', UsuarioController::class)->names('usuario');
-});
+});*/
