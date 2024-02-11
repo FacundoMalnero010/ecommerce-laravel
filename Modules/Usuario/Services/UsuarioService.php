@@ -51,13 +51,17 @@ class UsuarioService
      * Encodes user's password and persists it
      * @param array $data User's data
      * @return Usuario
+     * @uses self::createCart()
      * @throws Exception
      */
     public function store(array $data): Usuario
     {
         try {
             $data['password'] = Hash::make($data['password']);
-            return $this->usuarioRepository->store($data);
+            $user = $this->usuarioRepository->store($data);
+            if ($this->createCart($user)) {
+                return $user;
+            }
         }catch (Exception $e) {
             throw new Exception($e->getMessage(),$e->getCode());
         }
@@ -94,6 +98,21 @@ class UsuarioService
             return $this->usuarioRepository->destroy($id);
         }catch (Exception $e) {
             throw new Exception($e->getMessage(),$e->getCode());
+        }
+    }
+
+    /**
+     * Creates a user's cart
+     * @param Usuario $user
+     * @return bool
+     * @throws Exception
+     */
+    private function createCart(Usuario $user): bool
+    {
+        try {
+            return $this->usuarioRepository->createCart($user);
+        } catch (Exception $e) {
+            throw new Exception('No se ha podido crear el carrito', 409);
         }
     }
 }

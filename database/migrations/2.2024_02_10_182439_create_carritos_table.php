@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carritos', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id');
             $table->float('monto');
+            $table->timestamps();
 
             $table
                 ->foreign('id')

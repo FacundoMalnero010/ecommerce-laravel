@@ -50,6 +50,7 @@ class UsuarioRepository
     /**
      * Persists a user
      * @param array $data User's data
+     * @return Usuario
      * @throws Exception
      */
     public function store(array $data): Usuario
@@ -58,7 +59,6 @@ class UsuarioRepository
             $user = new Usuario($data);
             $user->save();
             return $user;
-
         }catch (Exception $e) {
             throw new Exception('No se ha podido almacenar el usuario',409);
         }
@@ -96,6 +96,22 @@ class UsuarioRepository
             return $user;
         }catch (Exception $e) {
             throw new Exception('No se ha podido eliminar el usuario',409);
+        }
+    }
+
+    /**
+     * Creates a user's cart
+     * @param Usuario $user
+     * @return bool
+     * @throws Exception
+     */
+    public function createCart(Usuario $user): bool
+    {
+        try {
+            return $user->createCart();
+        } catch (Exception $e) {
+            $user->delete();
+            throw new Exception('No se ha podido crear el carrito', 409);
         }
     }
 }
