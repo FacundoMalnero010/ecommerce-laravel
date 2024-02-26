@@ -11,7 +11,6 @@ use Modules\Usuario\app\Http\Requests\UsuarioStoreRequest;
 use Modules\Usuario\app\Http\Requests\UsuarioUpdateRequest;
 use Modules\Usuario\Services\UsuarioService;
 
-
 class UsuarioController extends Controller
 {
     protected UsuarioService $usuarioService;
